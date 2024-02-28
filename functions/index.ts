@@ -35,7 +35,7 @@ const asnToRedirect: { [key: number]: string } = {
 
 export const onRequestGet: PagesFunction<Env> = async (context) => {
   try {
-    const callerIp = context.request.headers.get('cf-connecting-ip')
+    const callerIp = context.request.headers.get('x-forwarded-for') ?? context.request.headers.get('cf-connecting-ip')
 
     const response = await fetch(`https://api.bigdatacloud.net/data/ip-geolocation?key=${context.env.BDC_API_KEY}&ip=${callerIp}`)
     const data: BDCResponse = await response.json()
